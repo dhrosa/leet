@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "leet"
+description = "leet."
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["pandas"]
+authors = [
+  { name = "Diony Rosa", email = "dhrosa+dev@gmail.com" },
+]
+version = "0.0.0"
+
+dependencies = ["pytest", "rich"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.hatch.envs.default.scripts]
+# Meta command to run all dev workflows
+all = [
+    "hatch run style:all",
+    "hatch run test:all",
+]
+
+[tool.hatch.envs.style]
+dependencies = ["setuptools", "isort", "black", "pylama", "mypy", "pytest",]
+
+[tool.hatch.envs.style.scripts]
+format = [
+       "isort --color .",
+       "black .",
+]
+check = [
+      #"pylama --ignore E203 .", # E203 is not pep8-compliant, and black breaks it
+      "mypy --strict --pretty .",
+] 
+all = ["format", "check"]
+
+[tool.hatch.envs.test]
+dependencies = ["pytest"]
+
+[tool.hatch.envs.test.scripts]
+all = ["pytest"]
+
+[tool.pytest.ini_options]
+addopts = "--no-header -W error --showlocals -s"
+log_level = "DEBUG"
+python_files = "*.py"
